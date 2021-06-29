@@ -1,6 +1,8 @@
 # shadowsocks-pdf
 
-Persistent bloom filter for shadowsocks.
+Persistent bloom filter for shadowsocks. 
+
+It is mainly with reference to the mechanism of AOF (Append Only File) of redis.
 
 ## Thanks
 

@@ -16,7 +16,6 @@ import (
 )
 
 func init() {
-	//gob.Register(internal.ClassicFilter{})
 	gob.RegisterName("internal.Filter", &internal.ClassicFilter{})
 }
 
@@ -49,7 +48,7 @@ var (
 type muFile struct {
 	path string
 	f    *os.File
-	// this mutex guarantee that only one goroutine can operate file at the same time.
+	// this mutex guarantee that only one goroutine can operate the file at the same time.
 	// however, the order of IV is not necessary
 	mu sync.Mutex
 }
@@ -59,7 +58,7 @@ type snapshot struct {
 	buf  bytes.Buffer
 }
 
-// PBF referenced the mechanism of AOF (Append Only File) of redis.
+// PBF is mainly with reference to the mechanism of AOF (Append Only File) of redis.
 type PBF struct {
 	file        muFile
 	lengthIV    uint8
@@ -109,7 +108,7 @@ func NewFromFile(path string, fsync AppendFsync) (*PBF, error) {
 }
 
 func (p *PBF) recoverFromFile() error {
-	f2, err := os.OpenFile(p.file.path, os.O_RDONLY, 0644)
+	f2, err := os.OpenFile(p.file.path, os.O_RDONLY, 0600)
 	if err != nil {
 		return err
 	}
@@ -197,7 +196,9 @@ func (p *PBF) Add(b []byte) (err error) {
 		p.snapshot.buf.Write(b)
 	}
 	p.snapshot.mu.Unlock()
-	// we do not need to guarantee the order of IV in the file
+	// 1. We do not need to guarantee the order of IV in the file.
+	// 2. The method of locking in Snapshot and here may cause some writing to the new file, but it is acceptable
+	//    because the performance is more important.
 	p.file.mu.Lock()
 	defer p.file.mu.Unlock()
 	if _, err = p.file.f.Write(b); err != nil {

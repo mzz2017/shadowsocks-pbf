@@ -13,7 +13,7 @@ func TestNew(t *testing.T) {
 	}
 	defer p.Close()
 	var b [32]byte
-	for i := 0; i < 500000; i++ {
+	for i := 0; i < 5000000; i++ {
 		rand.Read(b[:])
 		err := p.Add(b[:])
 		if err != nil {
