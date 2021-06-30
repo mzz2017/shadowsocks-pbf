@@ -1,8 +1,10 @@
-# shadowsocks-pdf
+# shadowsocks-pbf
 
 Persistent bloom filter for shadowsocks. 
 
 It is mainly with reference to the mechanism of AOF (Append Only File) of redis.
+
+However, there is still the problem of occupying memory. Visit [disk-bloom-filter](https://github.com/mzz2017/disk-bloom-filter) for another solution.
 
 ## Thanks
 
