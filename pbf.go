@@ -1,4 +1,4 @@
-package main
+package shadowsocks_pbf
 
 import (
 	"bytes"
@@ -6,11 +6,11 @@ import (
 	"encoding/gob"
 	"errors"
 	"fmt"
+	"github.com/mzz2017/shadowsocks-pbf/internal"
 	"io"
 	"log"
 	"os"
 	"path/filepath"
-	"shadowsocks-pbf/internal"
 	"sync"
 	"time"
 )
